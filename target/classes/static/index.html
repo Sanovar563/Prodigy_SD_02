@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guessing Game</title>
+</head>
+<body>
+    <h1>Guessing Game</h1>
+    <button onclick="startGame()">Start New Game</button>
+    <br><br>
+    <label for="guessInput">Enter your guess (between 1 and 100): </label>
+    <input type="number" id="guessInput" min="1" max="100">
+    <button onclick="makeGuess()">Submit Guess</button>
+    <br><br>
+    <p id="result"></p>
+
+    <script>
+        function startGame() {
+            fetch('/api/game/start', { method: 'POST' });
+            document.getElementById('result').innerText = '';
+        }
+
+        function makeGuess() {
+            const guess = document.getElementById('guessInput').value;
+            fetch(`/api/game/guess?guess=${guess}`, { method: 'POST' })
+                .then(response => response.text())
+                .then(result => document.getElementById('result').innerText = result);
+        }
+    </script>
+</body>
+</html>
